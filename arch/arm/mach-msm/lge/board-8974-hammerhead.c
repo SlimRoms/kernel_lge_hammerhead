@@ -148,6 +148,26 @@ void __init lge_add_lcd_kcal_devices(void)
 };
 #endif
 
+#ifdef CONFIG_BRICKED_THERMAL
+static struct msm_thermal_data msm_thermal_pdata = {
+	.sensor_id = 0,
+	.poll_ms = 400,
+	.shutdown_temp = 94,
+
+	.allowed_max_high = 90,
+	.allowed_max_low = 86,
+	.allowed_max_freq = 300000,
+
+	.allowed_mid_high = 87,
+	.allowed_mid_low = 82,
+	.allowed_mid_freq = 960000,
+
+	.allowed_low_high = 85,
+	.allowed_low_low = 79,
+	.allowed_low_freq = 1728000,
+};
+#endif
+
 /*
  * Used to satisfy dependencies for devices that need to be
  * run early or in a particular order. Most likely your device doesn't fall
@@ -169,7 +189,11 @@ void __init msm8974_add_drivers(void)
 	krait_power_init();
 	msm_clock_init(&msm8974_clock_init_data);
 	tsens_tm_init_driver();
+#ifdef CONFIG_BRICKED_THERMAL
+	msm_thermal_init(&msm_thermal_pdata);
+#else
 	msm_thermal_device_init();
+#endif
 	lge_add_persistent_device();
 #if defined (CONFIG_BCMDHD) || defined (CONFIG_BCMDHD_MODULE)
 	init_bcm_wifi();
