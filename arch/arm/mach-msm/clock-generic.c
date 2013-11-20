@@ -199,7 +199,8 @@ struct clk_ops clk_ops_gen_mux = {
 static long __div_round_rate(struct clk *c, unsigned long rate, int *best_div)
 {
 	struct div_clk *d = to_div_clk(c);
-	unsigned int div, min_div, max_div;
+	unsigned int div = 0;
+    unsigned int min_div, max_div;
 	long p_rrate, rrate = LONG_MAX;
 
 	rate = max(rate, 1UL);
@@ -256,7 +257,7 @@ static long div_round_rate(struct clk *c, unsigned long rate)
 static int div_set_rate(struct clk *c, unsigned long rate)
 {
 	struct div_clk *d = to_div_clk(c);
-	int div, rc = 0;
+	int div = 0, rc = 0;
 	long rrate, old_prate;
 
 	rrate = __div_round_rate(c, rate, &div);
