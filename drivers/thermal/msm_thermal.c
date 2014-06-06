@@ -124,7 +124,6 @@ static int update_cpu_min_freq(struct cpufreq_policy *cpu_policy,
     return ret;
 }
 
-<<<<<<< HEAD
 DECLARE_PER_CPU(struct msm_mpdec_cpudata_t, msm_mpdec_cpudata);
 #endif
 static void check_temp(struct work_struct *work)
@@ -218,16 +217,6 @@ static void check_temp(struct work_struct *work)
                 }
             }
 #endif
-=======
-static struct vdd_rstr_enable vdd_rstr_en = {
-	.ko_attr.attr.name = __stringify(enabled),
-	.ko_attr.attr.mode = 0644,
-	.ko_attr.show = vdd_rstr_en_show,
-	.ko_attr.store = vdd_rstr_en_store,
-	.enabled = 1,
-};
->>>>>>> aosp/android-msm-hammerhead-3.4-kitkat-mr2
-
         //mid trip point
         } else if ((temp >= msm_thermal_info.allowed_mid_high) &&
                (temp < msm_thermal_info.allowed_max_high) &&
