@@ -230,6 +230,10 @@ static void parse_hid_report_descriptor(struct gtco *device, char * report,
 
 	dbg("======>>>>>>PARSE<<<<<<======");
 
+	/* Init global value */
+	for (x = 0; x < TAG_GLOB_MAX; x++)
+		oldval[x] = 0;
+
 	/* Walk  this report and pull out the info we need */
 	while (i < length) {
 		prefix = report[i];
