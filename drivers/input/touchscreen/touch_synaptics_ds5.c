@@ -38,6 +38,10 @@
 
 #include "SynaImage_ds5.h"
 
+#ifdef CONFIG_CPUFREQ_HARDLIMIT
+#include <linux/cpufreq_hardlimit.h>
+#endif
+
 static struct workqueue_struct *synaptics_wq;
 
 /* RMI4 spec from 511-000405-01 Rev.D
@@ -246,6 +250,11 @@ static void *get_touch_handle(struct i2c_client *client);
 static void touch_abs_input_report(struct synaptics_ts_data *ts, const ktime_t timestamp)
 {
 	int	id;
+#ifdef CONFIG_CPUFREQ_HARDLIMIT
+	unsigned int	finger_count;
+
+	finger_count = 0;
+#endif
 
 	input_event(ts->input_dev, EV_SYN, SYN_TIME_SEC,
 				ktime_to_timespec(timestamp).tv_sec);
@@ -261,6 +270,9 @@ static void touch_abs_input_report(struct synaptics_ts_data *ts, const ktime_t t
 				ts->ts_data.curr_data[id].state != ABS_RELEASE);
 
 		if (ts->ts_data.curr_data[id].state != ABS_RELEASE) {
+#ifdef CONFIG_CPUFREQ_HARDLIMIT
+			finger_count++; // If we go through here, a finger is on the screen
+#endif
 			input_report_abs(ts->input_dev, ABS_MT_POSITION_X,
 					ts->ts_data.curr_data[id].x_position);
 			input_report_abs(ts->input_dev, ABS_MT_POSITION_Y,
@@ -276,6 +288,11 @@ static void touch_abs_input_report(struct synaptics_ts_data *ts, const ktime_t t
 			ts->ts_data.curr_data[id].state = 0;
 		}
 	}
+
+#ifdef CONFIG_CPUFREQ_HARDLIMIT
+	// Yank555.lu : Report touch event
+	touchboost_report_touch(finger_count);
+#endif
 
 	input_sync(ts->input_dev);
 }
