@@ -258,7 +258,7 @@ static int div_set_rate(struct clk *c, unsigned long rate)
 {
 	struct div_clk *d = to_div_clk(c);
 	int div = 0, rc = 0;
-	long rrate, old_prate;
+	long rrate, old_prate = 0;
 
 	rrate = __div_round_rate(c, rate, &div);
 	if (rrate != rate)

@@ -3216,7 +3216,7 @@ int cgroupstats_build(struct cgroupstats *stats, struct dentry *dentry)
 	struct cgroup *cgrp;
 	struct cgroup_iter it;
 	struct task_struct *tsk;
-       it.task = NULL;
+        it.task = NULL;
 
 	/*
 	 * Validate dentry by checking the superblock operations,
