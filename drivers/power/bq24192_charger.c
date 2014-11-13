@@ -31,6 +31,10 @@
 #include <linux/of_gpio.h>
 #include <linux/qpnp/qpnp-adc.h>
 
+#ifdef CONFIG_FORCE_FAST_CHARGE
+#include <linux/fastchg.h>
+#endif
+
 /* Register definitions */
 #define INPUT_SRC_CONT_REG              0X00
 #define PWR_ON_CONF_REG                 0X01
@@ -323,10 +327,23 @@ static int bq24192_set_input_i_limit(struct bq24192_chip *chip, int ma)
 		return -EINVAL;
 	}
 
+#ifdef CONFIG_FORCE_FAST_CHARGE
+	// Yank555.lu : Reapply current charge level if we have one
+	if (force_fast_charge    != FAST_CHARGE_DISABLED &&
+	    current_charge_level != NOT_FAST_CHARGING       )
+		ma = current_charge_level;
+
+	// Yank555.lu : Use the level below the requested current to stay safe
+	for (i = ARRAY_SIZE(icl_ma_table) - 1; i >= 0; i--) {
+		if (icl_ma_table[i].icl_ma <= ma)
+			break;
+	}
+#else
 	for (i = ARRAY_SIZE(icl_ma_table) - 1; i >= 0; i--) {
 		if (icl_ma_table[i].icl_ma == ma)
 			break;
 	}
+#endif // CONFIG_FORCE_FAST_CHARGE
 
 	if (i < 0) {
 		pr_err("can't find %d in icl_ma_table. Use min.\n", ma);
