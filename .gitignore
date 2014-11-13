@@ -88,4 +88,7 @@ GTAGS
 #
 # Yank555.lu
 #
-arch/arm/mach-msm/smd_rpc_sym.c
+
+/boot.img
+/dt.img
+storage0
