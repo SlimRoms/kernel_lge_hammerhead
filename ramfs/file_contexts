@@ -415,6 +415,9 @@
 
 /system/bin/sysinit       u:object_r:sysinit_exec:s0
 
+# For minivold in recovery
+/sbin/minivold            u:object_r:vold_exec:s0
+
 #############################
 # performance-related sysfs files (CM)
 /sys/kernel/mm/ksm(/.*)?       --          u:object_r:sysfs_writable:s0
@@ -423,3 +426,11 @@
 
 /data/hostapd(/.*)?         u:object_r:wifi_data_file:s0
 /data/misc/radio(/.*)?      u:object_r:radio_data_file:s0
+
+#############
+# Superuser's control sockets
+/dev/com.android.settings.daemon(/.*)?   u:object_r:superuser_device:s0
+/dev/com.android.settings(/.*)?   u:object_r:superuser_device:s0
+
+# Expansion of these hooks is a bit unconventional
+/cache/com.cyanogenmod.keyhandler.dex   u:object_r:dalvikcache_data_file:s0

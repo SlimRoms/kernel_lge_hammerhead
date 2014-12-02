@@ -62,3 +62,5 @@ ctl.                    u:object_r:ctl_default_prop:s0
 
 # NFC properties
 nfc.                    u:object_r:nfc_prop:s0
+#line 1 "vendor/slim/sepolicy/property_contexts"
+service.adb.tcp.              u:object_r:adbtcp_prop:s0
