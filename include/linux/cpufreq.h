@@ -276,7 +276,7 @@ void cpufreq_notify_utilization(struct cpufreq_policy *policy,
 static inline void cpufreq_verify_within_limits(struct cpufreq_policy *policy, unsigned int min, unsigned int max)
 {
 #ifdef CONFIG_CPUFREQ_HARDLIMIT
-	#ifdef CPUFREQ_HARDLIMIT_DEBUG
+	#ifdef CONFIG_CPUFREQ_HARDLIMIT_DEBUG
 	pr_info("[HARDLIMIT] cpufreq.h verify_within_limits : min = %u / max = %u / new_min = %u / new_max = %u \n",
 			min,
 			max,

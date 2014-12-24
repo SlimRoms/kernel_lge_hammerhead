@@ -341,12 +341,12 @@ extern void update_scaling_limits(unsigned int freq_min, unsigned int freq_max)
 	struct cpufreq_policy *policy;
 
 	for_each_possible_cpu(cpu) {
-		#ifdef CPUFREQ_HARDLIMIT_DEBUG
+		#ifdef CONFIG_CPUFREQ_HARDLIMIT_DEBUG
 		pr_info("[HARDLIMIT] cpufreq.c cpu%d \n", cpu);
 		#endif
 		policy = cpufreq_cpu_get(cpu);
 		if (policy != NULL) {
-			#ifdef CPUFREQ_HARDLIMIT_DEBUG
+			#ifdef CONFIG_CPUFREQ_HARDLIMIT_DEBUG
 			pr_info("[HARDLIMIT] cpufreq.c cpu%d - update_scaling_limits : old_min = %u / old_max = %u / new_min = %u / new_max = %u \n",
 					cpu,
 					policy->min,
@@ -505,16 +505,19 @@ static ssize_t store_scaling_min_freq
 	if (ret)
 		return -EINVAL;
 
+	new_policy.min = new_policy.user_policy.min;
+	new_policy.max = new_policy.user_policy.max;
+
 	ret = sscanf(buf, "%u", &new_policy.min);
 	if (ret != 1)
 		return -EINVAL;
 
-	policy->user_policy.min = new_policy.min;
-	new_policy.user_policy.min = new_policy.min;
-
 	ret = cpufreq_driver->verify(&new_policy);
 	if (ret)
 		pr_err("cpufreq: Frequency verification failed\n");
+
+	policy->user_policy.min = new_policy.min;
+	policy->user_policy.max = new_policy.max;
 
 	ret = __cpufreq_set_policy(policy, &new_policy);
 
@@ -545,16 +548,19 @@ static ssize_t store_scaling_max_freq
 	if (ret)
 		return -EINVAL;
 
+	new_policy.min = new_policy.user_policy.min;
+	new_policy.max = new_policy.user_policy.max;
+
 	ret = sscanf(buf, "%u", &new_policy.max);
 	if (ret != 1)
 		return -EINVAL;
 
-	policy->user_policy.max = new_policy.max;
-	new_policy.user_policy.max = new_policy.max;
-
 	ret = cpufreq_driver->verify(&new_policy);
 	if (ret)
 		pr_err("cpufreq: Frequency verification failed\n");
+
+	policy->user_policy.min = new_policy.min;
+	policy->user_policy.max = new_policy.max;
 
 	ret = __cpufreq_set_policy(policy, &new_policy);
 
@@ -1986,7 +1992,7 @@ int cpufreq_update_policy(unsigned int cpu)
 	pr_debug("updating policy for CPU %u\n", cpu);
 	memcpy(&policy, data, sizeof(struct cpufreq_policy));
 #ifdef CONFIG_CPUFREQ_HARDLIMIT
-	#ifdef CPUFREQ_HARDLIMIT_DEBUG
+	#ifdef CONFIG_CPUFREQ_HARDLIMIT_DEBUG
 	pr_info("[HARDLIMIT] cpufreq.c update_policy : old_min = %u / old_max = %u / tried_min = %u / tried_max = %u / new_min = %u / new_max = %u \n",
 			policy.min,
 			policy.max,

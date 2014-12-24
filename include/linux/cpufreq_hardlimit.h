@@ -15,15 +15,16 @@
 #ifndef _LINUX_CPUFREQ_HARDLIMIT_H
 #define _LINUX_CPUFREQ_HARDLIMIT_H
 
-#define CPUFREQ_HARDLIMIT_VERSION "v2.1 by Yank555.lu"
-
-//#define CPUFREQ_HARDLIMIT_DEBUG // Add debugging prints in dmesg
+#define CPUFREQ_HARDLIMIT_VERSION "v2.2 by Yank555.lu"
 
 /* Default frequencies for hammerhead */
 #define CPUFREQ_HARDLIMIT_MAX_SCREEN_ON_STOCK	2265600
 #define CPUFREQ_HARDLIMIT_MAX_SCREEN_OFF_STOCK	2265600
 #define CPUFREQ_HARDLIMIT_MIN_SCREEN_ON_STOCK	300000
 #define CPUFREQ_HARDLIMIT_MIN_SCREEN_OFF_STOCK	300000
+
+#define CPUFREQ_HARDLIMIT_TOUCHBOOST_LO_DEFAULT	883200
+#define CPUFREQ_HARDLIMIT_TOUCHBOOST_HI_DEFAULT	1267200
 
 #define CPUFREQ_HARDLIMIT_SCREEN_ON	0		/* default, consider we boot with screen on */
 #define CPUFREQ_HARDLIMIT_SCREEN_OFF	1
@@ -45,10 +46,7 @@
 #define CPUFREQ_HARDLIMIT_TOUCHBOOST_ACTIVE_LO	1
 #define CPUFREQ_HARDLIMIT_TOUCHBOOST_ACTIVE_HI	2
 
-#define CPUFREQ_HARDLIMIT_TOUCHBOOST_LO_DEFAULT	652800
-#define CPUFREQ_HARDLIMIT_TOUCHBOOST_HI_DEFAULT	1036800
-
-#define CPUFREQ_HARDLIMIT_TOUCHBOOST_EVENTS	5
+#define CPUFREQ_HARDLIMIT_TOUCHBOOST_EVENTS	3
 #define CPUFREQ_HARDLIMIT_TOUCHBOOST_EVENTS_MIN	1
 #define CPUFREQ_HARDLIMIT_TOUCHBOOST_EVENTS_MAX	10
 
@@ -63,8 +61,5 @@ unsigned int userspace_dvfs_lock_status(void);
 
 /* Hook in cpufreq for scaling min./max. */
 void update_scaling_limits(unsigned int freq_min, unsigned int freq_max);
-
-/* Hook in touchscreen driver for touchboost */
-void touchboost_report_touch(unsigned int finger_count);
 
 #endif
