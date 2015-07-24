@@ -217,6 +217,12 @@ on post-fs-data
     chmod 664 /sys/devices/system/cpu/cpu3/online
     write /dev/cpuctl/apps/cpu.notify_on_migrate 1
 
+    # Hardware tunables
+    chown system system /sys/devices/virtual/timed_output/vibrator/amp
+    chmod 0664 /sys/devices/virtual/timed_output/vibrator/amp
+    chown system system /sys/devices/virtual/graphics/fb0/rgb
+    chmod 0664 /sys/devices/virtual/graphics/fb0/rgb
+
     setprop vold.post_fs_data_done 1
 
 on charger
@@ -423,7 +429,7 @@ service qseecomd /system/bin/qseecomd
 service sdcard /system/bin/sdcard -u 1023 -g 1023 -l /data/media /mnt/shell/emulated
     class late_start
 
-service fuse_usbdisk /system/bin/sdcard -u 1023 -g 1023 -w 1023 -d /mnt/media_rw/usbdisk /storage/usbdisk
+service fuse_usbdisk /system/bin/sdcard -u 1023 -g 1023 -w 1023 /mnt/media_rw/usbdisk /storage/usbdisk
     class late_start
     disabled
 
@@ -442,14 +448,6 @@ service bdAddrLoader /system/bin/bdAddrLoader -f /persist/bluetooth/.bdaddr -h -
     user bluetooth
     group system bluetooth
     oneshot
-
-# bugreport is triggered by holding down volume down, volume up and power
-service bugreport /system/bin/dumpstate -d -p -B \
-        -o /data/data/com.android.shell/files/bugreports/bugreport
-    class main
-    disabled
-    oneshot
-    keycodes 114 115 116
 
 service mpdecision /system/bin/mpdecision --avg_comp
    class main
