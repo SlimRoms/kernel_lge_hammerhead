@@ -137,6 +137,13 @@ config CPU_FREQ_DEFAULT_GOV_INTELLIMM
           Use the CPUFreq governor 'intelliminmax' as default. This is
           governor will use only 3 different frequencies, idle, UI and max
 
+config CPU_FREQ_DEFAULT_GOV_ZZMOOVE
+	bool "zzmoove"
+	select CPU_FREQ_GOV_ZZMOOVE
+	select CPU_FREQ_GOV_PERFORMANCE
+	help
+	  Use the CPUFreq governor 'zzmoove' as default.
+
 endchoice
 
 config CPU_FREQ_GOV_PERFORMANCE
@@ -262,6 +269,23 @@ config CPU_FREQ_GOV_INTELLIMM
           For details, take a look at linux/Documentation/cpu-freq.
 
           If in doubt, say N.
+
+config CPU_FREQ_GOV_ZZMOOVE
+	tristate "'zzmoove' cpufreq governor"
+	depends on CPU_FREQ
+	help
+	  ZZMoove governor is based on the modified conservative (original author
+	  Alexander Clouter alex@digriz.org.uk) 'smoove' governor from
+	  Michael Weingaertner mialwe@googlemail.com
+	  (source: https://github.com/mialwe/mngb/)
+
+	  Modified by Zane Zaminsky since November 2012 (and further improved in
+	  2013/14 by Zane Zaminsky and Yank555) to be hotplug-able and optimzed
+	  for use with Samsung I9300. CPU Hotplug modifications partially taken
+	  from ktoonservative governor from ktoonsez KT747-JB kernel
+	  (source: https://github.com/ktoonsez/KT747-JB)
+
+	  If in doubt, say N.
 
 config CPUFREQ_HARDLIMIT
 	bool "CPU Frequency hardlimit driver (Yank555.lu)"
