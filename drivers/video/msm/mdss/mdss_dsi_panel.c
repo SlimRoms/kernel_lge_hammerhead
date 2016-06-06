@@ -1005,10 +1005,6 @@ static int __devinit mdss_dsi_panel_probe(struct platform_device *pdev)
 	if (!local_pdata)
 		return -EINVAL;
 
-#ifdef CONFIG_DEBUG_FS
-	debug_fs_init(&vendor_pdata);
-#endif
-
 	module_kobj = kobject_create_and_add(driver_name, &module_kset->kobj);
 	if (!module_kobj) {
 		pr_err("%s: kobject create failed\n", driver_name);
