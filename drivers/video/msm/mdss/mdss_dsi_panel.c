@@ -998,16 +998,11 @@ static int __devinit mdss_dsi_panel_probe(struct platform_device *pdev)
 	if (rc)
 		return rc;
 
-<<<<<<< HEAD
 	INIT_WORK(&send_cmds_work, send_local_on_cmds);
 
 	local_pdata = &vendor_pdata;
 	if (!local_pdata)
 		return -EINVAL;
-
-#ifdef CONFIG_DEBUG_FS
-	debug_fs_init(&vendor_pdata);
-#endif
 
 	module_kobj = kobject_create_and_add(driver_name, &module_kset->kobj);
 	if (!module_kobj) {
@@ -1020,9 +1015,6 @@ static int __devinit mdss_dsi_panel_probe(struct platform_device *pdev)
 		pr_err("%s: sysfs create failed: %d\n", panel_name, rc);
 
 	return rc;
-=======
-	return 0;
->>>>>>> 97eb9b0... Revert "msm: mdss: Add debug fs file for LCD gamma tuning"
 }
 
 static const struct of_device_id mdss_dsi_panel_match[] = {
